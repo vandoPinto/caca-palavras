@@ -5,15 +5,35 @@
   <meta charset="UTF-8">
   <title>Caça Palavras</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+  <!-- <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen"> -->
   <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'> -->
   <!-- <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen"> -->
   <!-- <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen"> -->
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <style>
+    .janela {
+      background-color: #FAC900;
+      position: absolute;
+      margin-top: 68px;
+      width: 580px;
+      margin-left: 153px;
+      display: grid;
+      justify-content: space-around;
+      border-radius: 20px;
+      cursor: pointer;
+    }
 
+    .textoJanela {
+      width: 500px;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
 </head>
 
 <body>
+  <h1>Vamos revisar os principais indicadores de sustentabilidade e segurança no meio ambiente? Observe o caça-palavras
+    e encontre os termos que estudamos no decorrer da nossa aula.</h1>
   <section class="main-content">
     <div id='puzzle'></div>
     <div id='words'></div>
@@ -24,7 +44,7 @@
       <script src="app/wordfind.js"></script>
       <script type="text/javascript" src="app/wordfindgame.js"></script>
       <script>
-        var words = ['Sustentabilidade', 'desenvolvimento', 'sustentável', 'econômicos', 'ambientais', 'inovação'];
+        var words = ['ATMOSFERA', 'SUSTENTABILIDADE', 'CLIMA', 'EQUILÍBRIO', 'TEMPERATURA', 'ECOSSISTEMA'];
         // start a word find game
         var gamePuzzle = wordfindgame.create(words, '#puzzle', '#words');
         $('#solve').click(function () {
@@ -39,6 +59,67 @@
       </script>
     </footer>
   </section>
+  <div id="janela_1" class="janela">
+    <p class="textoJanela">Atmosfera é camada gasosa que envolve a Terra. É composta por gases como oxigênio, hidrogênio
+      e gás carbônico.</p>
+  </div>
+  <div id="janela_2" class="janela">
+    <p class="textoJanela">Sustentabilidade é uma característica ou condição de um processo ou de um sistema que permite
+      a sua permanência, em
+      certo nível, por um determinado prazo.</p>
+  </div>
+  <div id="janela_3" class="janela">
+    <p class="textoJanela">Clima é a sucessão de diferentes estados do tempo que se repetem e se sucedem na atmosfera ao
+      longo do ano em
+      determinada região.</p>
+  </div>
+  <div id="janela_4" class="janela">
+    <p class="textoJanela">É a condição de um sistema em que as forças que sobre ele atuam se compensam, anulando-se
+      mutuamente.</p>
+  </div>
+  <div id="janela_5" class="janela">
+    <p class="textoJanela">É o grau de calor ou de frio do ambiente.</p>
+  </div>
+  <div id="janela_6" class="janela">
+    <p class="textoJanela">O Ecossistema que inclui os seres vivos e o ambiente, com suas características
+      físico-químicas e as inter-relações entre
+      ambos; biogeocenose, biossistema, holocenose.</p>
+  </div>
+  <div id="feedFinal" class="janela">
+    <p class="textoJanela">Muito bem, você conseguiu encontrar todos os termos estudados. Não se esqueça de que o
+      triângulo da sustentabilidade
+      contempla a união dos aspectos econômicos, ambientais e sociais, mas para que eles funcionem deve-se haver um
+      equilíbrio
+      entre esses pilares para que o mundo alcance o desenvolvimento sustentável.</p>
+  </div>
 </body>
 
 </html>
+<script>
+  let arrDeRespostas = [];
+  let janelas = $(document).find('[id^=janela_]').hide();
+  $(document).find('[id^=feedFinal]').hide();
+
+  janelas.map((i, e) => {
+    arrDeRespostas[i] = false;
+  })
+
+  $(document).on('wordFound', (e) => {
+    // console.log(e.originalEvent.detail.word);
+    words.map((element, i) => {
+      if (element == e.originalEvent.detail.word) {
+        $(document).find(`[id^=janela_${i + 1}]`).fadeIn().on('click', fecharTodasAsJanelas);
+        console.log(Number(i));
+        arrDeRespostas[Number(i)] = true;
+        console.log(arrDeRespostas);
+      }
+    })
+  })
+
+  function fecharTodasAsJanelas() {
+    $(document).find('[id^=janela]').fadeOut();
+    if (arrDeRespostas.every(elem => elem == true)) {
+      $(document).find('[id^=feedFinal]').fadeIn();
+    }
+  }
+</script>
